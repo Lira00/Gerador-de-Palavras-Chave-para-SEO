@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <input id="keyword" placeholder="Digite uma palavra..." />
+    <button onclick="generate()">Gerar</button>
+    <ul id="suggestions"></ul>
+    <script>
+      const keywords = {
+        blog: ["blog para iniciantes", "dicas de blog", "criar blog"],
+        web: ["desenvolvimento web", "design web", "web grátis"],
+      };
+      function generate() {
+        const input = document.getElementById("keyword").value.toLowerCase();
+        const suggestions = keywords[input] || ["Nenhuma sugestão"];
+        const ul = document.getElementById("suggestions");
+        ul.innerHTML = suggestions.map((s) => `<li>${s}</li>`).join("");
+      }
+    </script>
+  </body>
+</html>
