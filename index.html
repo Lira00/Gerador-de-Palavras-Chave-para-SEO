@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pt-BR">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -10,11 +10,6 @@
       content="Gere palavras-chave para SEO. Ferramenta gratuita para otimizar seu site."
     />
     <meta name="keywords" content="gerador palavras-chave, seo, otimização" />
-    <script
-      async
-      src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5816807232163649"
-      crossorigin="anonymous"
-    ></script>
   </head>
   <body class="bg-gray-100 flex items-center justify-center min-h-screen">
     <div class="bg-white p-6 rounded-lg shadow-lg w-full max-w-md">
@@ -32,21 +27,32 @@
       >
         Gerar
       </button>
-      <ul id="suggestions" class="mt-4"></ul>
+      <ul id="suggestions" class="mt-4 list-disc list-inside"></ul>
     </div>
+
     <script>
-      const keywords = {
-        blog: ["blog para iniciantes", "dicas de blog", "criar blog"],
-        web: ["desenvolvimento web", "design web", "web grátis"],
-        seo: ["otimização seo", "palavras-chave seo", "seo 2025"],
-      };
-      function generate() {
-        const input = document.getElementById("keyword").value.toLowerCase();
-        const suggestions = keywords[input] || ["Nenhuma sugestão"];
-        const ul = document.getElementById("suggestions");
-        ul.innerHTML = suggestions
-          .map((s) => `<li class="py-1">${s}</li>`)
-          .join("");
+      async function generate() {
+        const input = document.getElementById("keyword").value.trim();
+        if (!input) return;
+
+        const url = `https://suggestqueries.google.com/complete/search?client=firefox&q=${encodeURIComponent(
+          input
+        )}`;
+
+        try {
+          const res = await fetch(url);
+          const data = await res.json();
+          const suggestions = data[1]; // o Google retorna sugestões na posição [1]
+
+          const ul = document.getElementById("suggestions");
+          ul.innerHTML = suggestions
+            .map((s) => `<li class="py-1">${s}</li>`)
+            .join("");
+        } catch (err) {
+          console.error("Erro ao buscar sugestões:", err);
+          document.getElementById("suggestions").innerHTML =
+            "<li class='py-1 text-red-500'>Erro ao buscar sugestões</li>";
+        }
       }
     </script>
   </body>
